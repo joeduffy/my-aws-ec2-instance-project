@@ -1,68 +1,61 @@
-# EC2 Instance CDK Example
+ # AWS TypeScript Pulumi Template
 
-This project demonstrates how to create an EC2 instance with AWS CDK, including:
+ A minimal Pulumi template for provisioning AWS infrastructure using TypeScript. This template creates an Amazon S3 bucket and exports its name.
 
-- VPC with public subnets
-- Security groups for SSH access
-- EC2 instance with Amazon Linux 2023
-- CloudFormation Init for instance configuration
-- Asset deployment via S3
-- CloudWatch integration
+ ## Prerequisites
 
-## Prerequisites
+ - Pulumi CLI (>= v3): https://www.pulumi.com/docs/get-started/install/
+ - Node.js (>= 14): https://nodejs.org/
+ - AWS credentials configured (e.g., via `aws configure` or environment variables)
 
-- AWS CLI configured with appropriate credentials
-- Node.js 16 or later
-- TypeScript
+ ## Getting Started
 
-## Environment Variables
+ 1. Initialize a new Pulumi project:
 
-You can customize the deployment with these environment variables:
+    ```bash
+    pulumi new aws-typescript
+    ```
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `LOG_LEVEL` | Logging level | `INFO` |
-| `SSH_PUB_KEY` | Your SSH public key for instance access | ` ` (empty) |
-| `CPU_TYPE` | CPU architecture (`ARM64` or `X86`) | `ARM64` |
-| `INSTANCE_SIZE` | Instance size (`LARGE`, `XLARGE`, `XLARGE2`, `XLARGE4`) | `LARGE` |
+    Follow the prompts to set your:
+    - Project name
+    - Project description
+    - AWS region (defaults to `us-east-1`)
 
-## Getting Started
+ 2. Preview and deploy your infrastructure:
 
-```bash
-# Install dependencies
-npm install
+    ```bash
+    pulumi preview
+    pulumi up
+    ```
 
-# Build the project
-npm run build
+ 3. When you're finished, tear down your stack:
 
-# Deploy the stack
-npx cdk deploy
-```
+    ```bash
+    pulumi destroy
+    pulumi stack rm
+    ```
 
-## Connecting to the Instance
+ ## Project Layout
 
-After deployment, the CDK will output commands to connect to your instance:
+ - `Pulumi.yaml` — Pulumi project and template metadata
+ - `index.ts` — Main Pulumi program (creates an S3 bucket)
+ - `package.json` — Node.js dependencies
+ - `tsconfig.json` — TypeScript compiler options
 
-- Using SSH: `ssh ec2-user@<public-dns-name>`
-- Using SSM: `aws ssm start-session --target <instance-id>`
+ ## Configuration
 
-## Testing
+ | Key           | Description                             | Default     |
+ | ------------- | --------------------------------------- | ----------- |
+ | `aws:region`  | The AWS region to deploy resources into | `us-east-1` |
 
-```bash
-npm test
-```
+ Use `pulumi config set <key> <value>` to customize configuration.
 
-## Clean Up
+ ## Next Steps
 
-```bash
-npx cdk destroy
-```
+ - Extend `index.ts` to provision additional resources (e.g., VPCs, Lambda functions, DynamoDB tables).
+ - Explore [Pulumi AWSX](https://www.pulumi.com/docs/reference/pkg/awsx/) for higher-level AWS components.
+ - Consult the [Pulumi documentation](https://www.pulumi.com/docs/) for more examples and best practices.
 
-## Project Structure
+ ## Getting Help
 
-- `bin/app.ts` - Entry point for CDK application
-- `lib/ec2-stack.ts` - Main stack definition
-- `lib/constructs/` - CDK constructs for VPC and EC2 server
-- `lib/utils/` - Utility functions and validators
-- `lib/resources/` - Configuration files and assets for the EC2 instance
-- `test/` - Jest tests for the CDK constructs
+ If you encounter any issues or have suggestions, please open an issue in this repository.

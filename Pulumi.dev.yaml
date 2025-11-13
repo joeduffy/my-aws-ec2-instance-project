@@ -1,0 +1,7 @@
+config:
+  aws:region: us-east-1
+  my-aws-ec2-instance-project:logLevel: INFO
+  my-aws-ec2-instance-project:cpuType: ARM64
+  my-aws-ec2-instance-project:instanceSize: LARGE
+  my-aws-ec2-instance-project:sshPubKey:
+    secure: AAABAPuO8ceUhtaNGyg8d9gCH+nCQ1uNku/YzRbKj1gm
