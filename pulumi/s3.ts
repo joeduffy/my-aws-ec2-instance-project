@@ -1,6 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws-native";
-import * as command from "@pulumi/command";
+import * as synced from "@pulumi/synced-folder";
 import * as path from "path";
 
 export interface S3AssetBucketResult {
@@ -38,12 +38,12 @@ export function createAssetBucket(): S3AssetBucketResult {
     }, { protect: true });
 
     // Deploy assets to S3 for semantic compatibility with CDK
-    // CDK uses a Lambda-based deployment, but Pulumi can use a local command
-    // This ensures assets are synced whenever they change
-    const assetSync = new command.local.Command("assetBucketDeployment", {
-        create: pulumi.interpolate`aws s3 sync ${path.join(__dirname, "resources/server/assets")} s3://${assetBucket.id}/ --exclude "**/node_modules/**" --exclude "**/dist/**"`,
-        update: pulumi.interpolate`aws s3 sync ${path.join(__dirname, "resources/server/assets")} s3://${assetBucket.id}/ --exclude "**/node_modules/**" --exclude "**/dist/**" --delete`,
-        delete: pulumi.interpolate`aws s3 rm s3://${assetBucket.id}/sample --recursive`,
+    // Using Pulumi's synced-folder component (purpose-built for this use case)
+    // This is better than CDK's Lambda-based deployment or raw commands
+    const assetSync = new synced.S3BucketFolder("assetBucketDeployment", {
+        path: path.join(__dirname, "resources/server/assets"),
+        bucketName: assetBucket.id,
+        acl: "private",
     }, { dependsOn: [assetBucket] });
 
     return {
