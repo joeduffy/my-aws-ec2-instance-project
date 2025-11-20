@@ -1,5 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws-native";
+import * as command from "@pulumi/command";
+import * as path from "path";
 
 export interface S3AssetBucketResult {
     bucket: aws.s3.Bucket;
@@ -35,8 +37,14 @@ export function createAssetBucket(): S3AssetBucketResult {
         ],
     }, { protect: true });
 
-    // Note: Asset deployment is handled by CloudFormation custom resources
-    // We don't recreate the Lambda-based deployment in Pulumi
+    // Deploy assets to S3 for semantic compatibility with CDK
+    // CDK uses a Lambda-based deployment, but Pulumi can use a local command
+    // This ensures assets are synced whenever they change
+    const assetSync = new command.local.Command("assetBucketDeployment", {
+        create: pulumi.interpolate`aws s3 sync ${path.join(__dirname, "resources/server/assets")} s3://${assetBucket.id}/ --exclude "**/node_modules/**" --exclude "**/dist/**"`,
+        update: pulumi.interpolate`aws s3 sync ${path.join(__dirname, "resources/server/assets")} s3://${assetBucket.id}/ --exclude "**/node_modules/**" --exclude "**/dist/**" --delete`,
+        delete: pulumi.interpolate`aws s3 rm s3://${assetBucket.id}/sample --recursive`,
+    }, { dependsOn: [assetBucket] });
 
     return {
         bucket: assetBucket,
