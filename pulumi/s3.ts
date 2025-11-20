@@ -1,7 +1,5 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as aws from "@pulumi/aws-native";
-import * as command from "@pulumi/command";
-import * as path from "path";
 
 export interface S3AssetBucketResult {
     bucket: aws.s3.Bucket;
@@ -11,30 +9,34 @@ export interface S3AssetBucketResult {
 export function createAssetBucket(): S3AssetBucketResult {
     // Create S3 bucket for assets
     const assetBucket = new aws.s3.Bucket("EC2assetBucket", {
+        bucketName: "ec2example-ec2assetbucketc584b4ab-hnvvvneadyho",
+        bucketEncryption: {
+            serverSideEncryptionConfiguration: [{
+                bucketKeyEnabled: false,
+                serverSideEncryptionByDefault: {
+                    sseAlgorithm: aws.s3.BucketServerSideEncryptionByDefaultSseAlgorithm.Aes256,
+                },
+            }],
+        },
+        ownershipControls: {
+            rules: [{
+                objectOwnership: aws.s3.BucketOwnershipControlsRuleObjectOwnership.BucketOwnerPreferred,
+            }],
+        },
         publicAccessBlockConfiguration: {
             blockPublicAcls: true,
             blockPublicPolicy: true,
             ignorePublicAcls: true,
             restrictPublicBuckets: true,
         },
-        ownershipControls: {
-            rules: [{
-                objectOwnership: "BucketOwnerPreferred",
-            }],
-        },
-        tags: [{ key: "Name", value: "EC2assetBucket" }],
-    });
+        tags: [
+            { key: "aws-cdk:cr-owned:2e37783d", value: "true" },
+            { key: "aws-cdk:auto-delete-objects", value: "true" },
+        ],
+    }, { protect: true });
 
-    // Note: Asset deployment will be handled separately
-    // The CDK BucketDeployment construct uses a Lambda function to deploy assets
-    // In Pulumi, we can use the command provider to sync files after the bucket is created
-    // or handle this as a manual step during the import process
-    
-    // Create a local command to sync assets to S3 after bucket creation
-    const assetSync = new command.local.Command("assetBucketDeployment", {
-        create: pulumi.interpolate`aws s3 sync ${path.join(__dirname, "resources/server/assets")} s3://${assetBucket.id}/ --exclude "**/node_modules/**" --exclude "**/dist/**"`,
-        // Only run if the bucket exists
-    }, { dependsOn: [assetBucket] });
+    // Note: Asset deployment is handled by CloudFormation custom resources
+    // We don't recreate the Lambda-based deployment in Pulumi
 
     return {
         bucket: assetBucket,
