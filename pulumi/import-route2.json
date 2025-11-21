@@ -1,0 +1,9 @@
+{
+    "resources": [
+        {
+            "type": "aws-native:ec2:Route",
+            "name": "VPCServerPublicSubnet2DefaultRoute",
+            "id": "rtb-0f0259db930b14006|0.0.0.0/0"
+        }
+    ]
+}

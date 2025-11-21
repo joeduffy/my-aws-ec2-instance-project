@@ -1,0 +1,79 @@
+{
+    "resources": [
+        {
+            "type": "aws-native:ec2:Vpc",
+            "name": "VPC",
+            "id": "vpc-02ad6116c27d06f7f"
+        },
+        {
+            "type": "aws-native:ec2:InternetGateway",
+            "name": "VPCIGW",
+            "id": "igw-08bdc400523eba865"
+        },
+        {
+            "type": "aws-native:ec2:VpcGatewayAttachment",
+            "name": "VPCGW",
+            "id": "IGW|vpc-02ad6116c27d06f7f"
+        },
+        {
+            "type": "aws-native:ec2:Subnet",
+            "name": "VPCServerPublicSubnet1",
+            "id": "subnet-0c5219d5ee348921b"
+        },
+        {
+            "type": "aws-native:ec2:Subnet",
+            "name": "VPCServerPublicSubnet2",
+            "id": "subnet-0b3c3ebb1a0146ac6"
+        },
+        {
+            "type": "aws-native:ec2:RouteTable",
+            "name": "VPCServerPublicSubnetRouteTable",
+            "id": "rtb-04ba172a876864e16"
+        },
+        {
+            "type": "aws-native:ec2:Route",
+            "name": "VPCServerPublicSubnetDefaultRoute",
+            "id": "rtb-04ba172a876864e16|0.0.0.0/0"
+        },
+        {
+            "type": "aws-native:ec2:SubnetRouteTableAssociation",
+            "name": "VPCServerPublicSubnet1RouteTableAssociation",
+            "id": "rtbassoc-042e515081ee68d93"
+        },
+        {
+            "type": "aws-native:ec2:SubnetRouteTableAssociation",
+            "name": "VPCServerPublicSubnet2RouteTableAssociation",
+            "id": "rtbassoc-065f591d7a38cf727"
+        },
+        {
+            "type": "aws-native:ec2:SecurityGroup",
+            "name": "VPCSSHSecurityGroup",
+            "id": "sg-0f5fbfa48fd829a0e"
+        },
+        {
+            "type": "aws-native:s3:Bucket",
+            "name": "EC2assetBucket",
+            "id": "ec2example-ec2assetbucketc584b4ab-hnvvvneadyho"
+        },
+        {
+            "type": "aws-native:iam:Role",
+            "name": "EC2serverEc2Role",
+            "id": "EC2Example-EC2serverEc2Role6775A3D4-rI7E0gHczLgA"
+        },
+        {
+            "type": "aws-native:iam:InstanceProfile",
+            "name": "EC2serverEc2RoleInstanceProfile",
+            "id": "EC2Example-EC2InstanceInstanceProfile2CAA3051-94GVYUhoH5Zd"
+        },
+        {
+            "type": "aws-native:ec2:SecurityGroup",
+            "name": "EC2ec2InstanceSecurityGroup",
+            "id": "sg-013ebf1e82eb12622"
+        },
+        {
+            "type": "aws-native:ec2:Instance",
+            "name": "EC2Instance",
+            "id": "i-0e0b3afc646ba6c40"
+        }
+    ]
+}

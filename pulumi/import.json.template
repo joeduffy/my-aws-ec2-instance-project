@@ -1,0 +1,79 @@
+{
+    "resources": [
+        {
+            "type": "aws-native:ec2:Vpc",
+            "name": "VPC",
+            "id": "<VPC_PHYSICAL_ID>"
+        },
+        {
+            "type": "aws-native:ec2:InternetGateway",
+            "name": "VPCIGW",
+            "id": "<IGW_PHYSICAL_ID>"
+        },
+        {
+            "type": "aws-native:ec2:VpcGatewayAttachment",
+            "name": "VPCGW",
+            "id": "<VPC_ID>/<IGW_ID>"
+        },
+        {
+            "type": "aws-native:ec2:Subnet",
+            "name": "VPCServerPublicSubnet1",
+            "id": "<SUBNET1_PHYSICAL_ID>"
+        },
+        {
+            "type": "aws-native:ec2:Subnet",
+            "name": "VPCServerPublicSubnet2",
+            "id": "<SUBNET2_PHYSICAL_ID>"
+        },
+        {
+            "type": "aws-native:ec2:RouteTable",
+            "name": "VPCServerPublicSubnetRouteTable",
+            "id": "<ROUTE_TABLE_PHYSICAL_ID>"
+        },
+        {
+            "type": "aws-native:ec2:Route",
+            "name": "VPCServerPublicSubnetDefaultRoute",
+            "id": "<ROUTE_TABLE_ID>|0.0.0.0/0"
+        },
+        {
+            "type": "aws-native:ec2:SubnetRouteTableAssociation",
+            "name": "VPCServerPublicSubnet1RouteTableAssociation",
+            "id": "<SUBNET1_ID>/<ROUTE_TABLE_ID>"
+        },
+        {
+            "type": "aws-native:ec2:SubnetRouteTableAssociation",
+            "name": "VPCServerPublicSubnet2RouteTableAssociation",
+            "id": "<SUBNET2_ID>/<ROUTE_TABLE_ID>"
+        },
+        {
+            "type": "aws-native:ec2:SecurityGroup",
+            "name": "VPCSSHSecurityGroup",
+            "id": "<SSH_SG_PHYSICAL_ID>"
+        },
+        {
+            "type": "aws-native:s3:Bucket",
+            "name": "EC2assetBucket",
+            "id": "<S3_BUCKET_NAME>"
+        },
+        {
+            "type": "aws-native:iam:Role",
+            "name": "EC2serverEc2Role",
+            "id": "<IAM_ROLE_NAME>"
+        },
+        {
+            "type": "aws-native:iam:InstanceProfile",
+            "name": "EC2serverEc2RoleInstanceProfile",
+            "id": "<INSTANCE_PROFILE_NAME>"
+        },
+        {
+            "type": "aws-native:ec2:SecurityGroup",
+            "name": "EC2ec2InstanceSecurityGroup",
+            "id": "<EC2_SG_PHYSICAL_ID>"
+        },
+        {
+            "type": "aws-native:ec2:Instance",
+            "name": "EC2Instance",
+            "id": "<EC2_INSTANCE_ID>"
+        }
+    ]
+}
